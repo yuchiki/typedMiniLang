@@ -1,23 +1,40 @@
-language: haskell
+# This is the simple Travis configuration, which is intended for use
+# on applications which do not require cross-platform and
+# multiple-GHC-version support. For more information and other
+# options, see:
+#
+# https://docs.haskellstack.org/en/stable/travis_ci/
+#
+# Copy these contents into the root directory of your Github project in a file
+# named .travis.yml
+
+# Choose a build environment
+dist: xenial
+
+# Do not choose a language; we provide our own build tools.
+language: generic
+
+# Caching so the next build will be fast too.
 cache:
   directories:
-    - $HOME/.stack
-before_install:
-  - mkdir -p ~/.local/bin
-  - export PATH=$HOME/.local/bin:$PATH
-  - travis_retry curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
-  - stack config set system-ghc --global true
-  - export PATH=/opt/ghc/8.0.2/bin:$PATH
+  - $HOME/.stack
+
+# Ensure necessary system libraries are present
 addons:
   apt:
-    sources:
-    - hvr-ghc
     packages:
-    - ghc-8.0.2
-    - stack --no-terminal --install-ghc test --only-dependencies
+      - libgmp-dev
+
+before_install:
+# Download and unpack the stack executable
+- mkdir -p ~/.local/bin
+- export PATH=$HOME/.local/bin:$PATH
+- travis_retry curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
 install:
-#  - stack setup --no-terminal
-#  - stack build --only-snapshot --no-terminal
+# Build dependencies
+- stack --no-terminal --install-ghc test --only-dependencies
+
 script:
-  - curl -sL https://raw.github.com/ndmitchell/hlint/master/misc/travis.sh | sh -s .
-  - stack test
+# Build the package, its tests, and its docs and run the tests
+- stack --no-terminal test --haddock --no-haddock-deps
