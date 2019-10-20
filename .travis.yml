@@ -14,6 +14,10 @@ dist: xenial
 # Do not choose a language; we provide our own build tools.
 language: generic
 
+branches:
+  only:
+    - master
+
 # Caching so the next build will be fast too.
 cache:
   directories:
