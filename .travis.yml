@@ -14,7 +14,7 @@ addons:
     - hvr-ghc
     packages:
     - ghc-8.0.2
-   - stack --no-terminal --install-ghc test --only-dependencies
+    - stack --no-terminal --install-ghc test --only-dependencies
 install:
 #  - stack setup --no-terminal
 #  - stack build --only-snapshot --no-terminal
