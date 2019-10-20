@@ -17,3 +17,12 @@ T0 ::= Bool | Int | T0 -> T0
 
 e ::= e0
 T ::= T0
+
+
+## ロードマップ
+| 項目 | done?
+| :-   | :-
+| e0が定義される | not yet
+| (e0がparseできる) | not yet
+| e0が実行できる | not yet
+| e0が型検査できる | not yet
