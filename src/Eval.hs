@@ -16,7 +16,7 @@ expectBool (VBool b) = Just b
 expectBool _ = Nothing
 
 expectAbs :: Value -> Maybe (Variable, Expr)
-expectAbs (VAbs x e) = (x, e)
+expectAbs (VAbs x e) = Just (x, e)
 expectAbs _ = Nothing
 
 type BinOp = Env -> Expr -> Expr -> Maybe Value
