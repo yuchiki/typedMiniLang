@@ -17,4 +17,6 @@ data Expr =
     | EEqInt Expr Expr
     | EIf Expr Expr Expr
     | ELet Variable Expr Expr
+    | EAbs Variable Expr
+    | EApp Expr Expr
     deriving (Show)
