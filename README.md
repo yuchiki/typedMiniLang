@@ -12,6 +12,7 @@ e0 ::= x | b | n
     | e < e | e ==_int e
     | if e then e else e
     | let x = e in e
+    | fun x -> e | e e
 
 T0 ::= Bool | Int | T0 -> T0
 
