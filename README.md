@@ -12,6 +12,7 @@ e0 ::= x | b | n
     | e < e | e ==_int e
     | if e then e else e
     | let x = e in e
+    | fun x -> e | e e
 
 T0 ::= Bool | Int | T0 -> T0
 
@@ -22,7 +23,7 @@ T ::= T0
 ## ロードマップ
 | 項目 | done?
 | :-   | :-
-| e0が定義される | not yet
+| e0が定義される | done
 | (e0がparseできる) | not yet
 | e0が実行できる | not yet
 | e0が型検査できる | not yet
