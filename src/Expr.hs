@@ -4,8 +4,8 @@ type Variable = String
 
 data Expr =
     EVar Variable
-    | ECBool Bool
-    | ECInt Int
+    | EBool Bool
+    | EInt Int
     | EAdd Expr Expr
     | ESub Expr Expr
     | EMul Expr Expr
@@ -19,4 +19,4 @@ data Expr =
     | ELet Variable Expr Expr
     | EAbs Variable Expr
     | EApp Expr Expr
-    deriving (Show)
+    deriving (Show, Eq)

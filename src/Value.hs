@@ -6,3 +6,4 @@ data Value =
     VBool Bool
     | VInt Int
     | VAbs Variable Expr
+    deriving (Show, Eq)
