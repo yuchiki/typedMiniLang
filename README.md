@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/yuchiki/typedMiniLang.svg?branch=master)](https://travis-ci.com/yuchiki/typedMiniLang)
+
 # typedMiniLang
 
 型推論器を書く練習
