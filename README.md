@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/yuchiki/typedMiniLang.svg?branch=master)](https://travis-ci.com/yuchiki/typedMiniLang)
+
 # typedMiniLang
 
 型推論器を書く練習
@@ -25,5 +27,5 @@ T ::= T0
 | :-   | :-
 | e0が定義される | done
 | (e0がparseできる) | not yet
-| e0が実行できる | not yet
+| e0が実行できる | done
 | e0が型検査できる | not yet
