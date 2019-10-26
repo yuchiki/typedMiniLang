@@ -26,7 +26,7 @@ type BinOpGenerator a b = (a -> a -> b) -> BinOp
 binOp :: (Value -> Maybe a) -> (b -> Maybe Value) -> BinOpGenerator a b
 binOp from to op env e1 e2 = do
     v1 <- eval env e1 >>= from
-    v2 <- eval env e1 >>= from
+    v2 <- eval env e2 >>= from
     to $ op v1 v2
 
 intBinOp :: BinOpGenerator Int Int
@@ -40,8 +40,8 @@ compBinOp = binOp expectInt (return . VBool)
 
 eval :: Env -> Expr -> Maybe Value
 eval env (EVar v) = Map.lookup v env
-eval env (ECBool b) = Just $ VBool b
-eval env (ECInt i) = Just $ VInt i
+eval env (EBool b) = Just $ VBool b
+eval env (EInt i) = Just $ VInt i
 eval env (EAdd e1 e2) = intBinOp (+) env e1 e2
 eval env (ESub e1 e2) = intBinOp (-) env e1 e2
 eval env (EMul e1 e2) = intBinOp (*) env e1 e2
