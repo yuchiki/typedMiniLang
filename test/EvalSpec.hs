@@ -64,6 +64,12 @@ spec =
             context "when the first argument is not an abstraction" $
                 it "fails" $
                     shouldFail $ EApp (EInt 1) (EInt 2)
+        context "given ENil" $
+            it "returns VNil" $
+                ENil `shouldBecome` VNil
+        context "given (ECons e1 e2)" $
+            it "returns VCons" $
+                ECons (EInt 1) (EInt 2) `shouldBecome` VCons (VInt 1) (VInt 2)
     where
         (shouldBecome, shouldFail) = getMatcher Map.empty
         intOpExpectation = genIntOpExpectation shouldBecome shouldFail

@@ -8,13 +8,31 @@
 
 e0は以下は再帰を持たない式である。
 
-e0 ::= x | b | n
+    e0 ::=
+
+    x | b | n
+
+
     | e + e | e - e | e * e | e / e
+
+
     | e && e | e || e | !e
+
+
     | e < e | e ==_int e
+
+
     | if e then e else e
+
+
     | let x = e in e
+
+
     | fun x -> e | e e
+
+    | nil | e :: e
+
+
 
 T0 ::= Bool | Int | T0 -> T0
 

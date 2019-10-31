@@ -66,3 +66,8 @@ eval env (EApp e1 e2) = do
     v2 <- eval env e2
     let newEnv = Map.insert x v2 env
     eval newEnv e
+eval env ENil = Just VNil
+eval env (ECons e1 e2) = do
+    v1 <- eval env e1
+    v2 <- eval env e2
+    Just $ VCons v1 v2
