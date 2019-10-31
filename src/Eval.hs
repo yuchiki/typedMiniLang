@@ -71,3 +71,8 @@ eval env (ECons e1 e2) = do
     v1 <- eval env e1
     v2 <- eval env e2
     Just $ VCons v1 v2
+eval env (EMatch e1 e2 x1 x2 e3) = do
+    v1 <- eval env e1
+    case v1 of
+        VNil -> eval env e2
+        VCons vhead vtail -> eval (Map.insert x1 vhead $ Map.insert x2 vtail env) e3

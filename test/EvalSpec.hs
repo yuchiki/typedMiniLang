@@ -70,6 +70,17 @@ spec =
         context "given (ECons e1 e2)" $
             it "returns VCons" $
                 ECons (EInt 1) (EInt 2) `shouldBecome` VCons (VInt 1) (VInt 2)
+        context "given (EMatch e1 e2 x1 x2 e3)" $ do
+            context "when e1 evaluates to nil" $
+                it "returns the value of e2" $
+                    EMatch ENil (EInt 1) "x" "y" (EInt 2) `shouldBecome` VInt 1
+            context "when e1 evaluates to cons" $ do
+                it "returns the value of e3" $
+                    EMatch (ECons (EInt 10) (EInt 2)) (EInt 1) "x" "y" (EInt 2) `shouldBecome` VInt 2
+                it "binds x1 :: x2 to the value of e1 in e3" $
+                    EMatch (ECons (EInt 10) (EInt 2)) (EInt 1) "x" "y" (EDiv (EVar "x") (EVar "y")) `shouldBecome` VInt 5
+
+
     where
         (shouldBecome, shouldFail) = getMatcher Map.empty
         intOpExpectation = genIntOpExpectation shouldBecome shouldFail

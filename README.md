@@ -31,6 +31,7 @@ e0は以下は再帰を持たない式である。
     | fun x -> e | e e
 
     | nil | e :: e
+    | match [] -> e | x :: x -> e
 
 
 
