@@ -19,4 +19,7 @@ data Expr =
     | ELet Variable Expr Expr
     | EAbs Variable Expr
     | EApp Expr Expr
+    | ENil
+    | ECons Expr Expr
+    | EMatch Expr Expr Variable Variable Expr
     deriving (Show, Eq)
