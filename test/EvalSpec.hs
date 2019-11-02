@@ -79,8 +79,6 @@ spec =
                     EMatch (ECons (EInt 10) (EInt 2)) (EInt 1) "x" "y" (EInt 2) `shouldBecome` VInt 2
                 it "binds x1 :: x2 to the value of e1 in e3" $
                     EMatch (ECons (EInt 10) (EInt 2)) (EInt 1) "x" "y" (EDiv (EVar "x") (EVar "y")) `shouldBecome` VInt 5
-
-
     where
         (shouldBecome, shouldFail) = getMatcher Map.empty
         intOpExpectation = genIntOpExpectation shouldBecome shouldFail
