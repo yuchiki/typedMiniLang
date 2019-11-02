@@ -1,6 +1,7 @@
 module Value where
 
 import Expr
+import Variable
 
 data Value =
     VBool Bool

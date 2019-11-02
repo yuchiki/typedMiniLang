@@ -1,6 +1,7 @@
 module Eval where
 
 import qualified Data.Map as Map
+import Variable
 import Expr
 import Value
 
