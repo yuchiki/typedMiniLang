@@ -1,5 +1,6 @@
 module SimpleType where
 
+import Variable
 import qualified Data.Map as Map
 
 type TypeID = Int
@@ -11,7 +12,7 @@ data SimpleType =
     | TFun SimpleType SimpleType
     deriving(Show, Eq)
 
-type TypeEnv = Map.Map TypeID SimpleType
+type TypeEnv = Map.Map Variable SimpleType
 
 newtype TypeIDGenerator =  TypeIDGenerator TypeID
 
