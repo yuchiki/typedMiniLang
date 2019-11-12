@@ -93,8 +93,6 @@ getMatcher env = (shouldBecome, shouldFail)
         e `shouldBecome` v = evalWithSpecificEnv e `shouldBe` Just v
         shouldFail e = evalWithSpecificEnv e `shouldBe` Nothing
 
-notYet = it "has not yet tested" pending
-
 genIntOpExpectation :: HasCallStack => OkMatcher -> FailMatcher -> (Expr -> Expr -> Expr) -> Int -> Int -> Int -> SpecWith ()
 genIntOpExpectation shouldBecome shouldFail eOp left right expected = do
     context "when both args are int" $
