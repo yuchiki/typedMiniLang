@@ -1,6 +1,6 @@
 module Expr where
 
-type Variable = String
+import Variable
 
 data Expr =
     EVar Variable
