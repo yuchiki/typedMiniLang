@@ -4,7 +4,16 @@ import Test.Hspec
 
 
 spec :: Spec
-spec =
+spec = do
+    extractSpec
+    unifySpec
+    ftvSpec
+    substituteOneSpec
+    substituteSpec
+    substituteEqsSpec
+
+extractSpec :: Spec
+extractSpec =
     describe "extract" $ do
         context "given EVar" notYet
         context "given EBool" notYet
@@ -23,5 +32,20 @@ spec =
         context "given ENil" notYet
         context "given ECons" notYet
         context "given EMatch"  notYet
+
+unifySpec :: Spec
+unifySpec = notYet
+
+ftvSpec :: Spec
+ftvSpec = notYet
+
+substituteOneSpec :: Spec
+substituteOneSpec = notYet
+
+substituteSpec :: Spec
+substituteSpec = notYet
+
+substituteEqsSpec :: Spec
+substituteEqsSpec = notYet
 
 notYet = it "has not yet tested" pending
