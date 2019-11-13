@@ -30,22 +30,31 @@ e0は以下は再帰を持たない式である。
 
     | fun x -> e | e e
 
+e1 はe0に以下を加えたもの
+
     | nil | e :: e
     | match [] -> e | x :: x -> e
 
-
+多相的でない型システムT0-System
 
 T0 ::= Bool | Int | T0 -> T0
 
-e ::= e0
+let多相のある型システムT1-System
 
-多相的でない型システム T0-Systemは、リストとマッチをサポートしない。
-
+not-defined
 
 ## ロードマップ
 | 項目 | done?
 | :-   | :-
 | e0が定義される | done
+| e1が定義される | done
+| T0が定義される | done
+| T1が定義される | not yet
 | (e0がparseできる) | not yet
 | e0が実行できる | done
-| e0が型検査できる | not yet
+| e0がT0型検査できる | not yet
+| e0がT1型検査できる | not yet
+| e1が実行できる | done
+| (e1がparseできる) | not yet
+| e1がT0型検査できる | not yet
+| e1がT1型検査できる | not yet
