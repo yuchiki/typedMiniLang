@@ -9,7 +9,7 @@ import Expr
 
 spec :: Spec
 spec = do
-    inferSpec
+    infer'Spec
     extractSpec
     unifySpec
     ftvSpec
@@ -17,8 +17,8 @@ spec = do
     substituteSpec
     substituteEqsSpec
 
-inferSpec :: Spec -- 散発的なテストにとどめて、全体の仕組みが動いているかどうかのチェックだけをする。
-inferSpec =
+infer'Spec :: Spec -- 散発的なテストにとどめて、全体の仕組みが動いているかどうかのチェックだけをする。
+infer'Spec =
     describe "infer" $ do
         context "given typable expressions" $ do
             it "types 1" $
@@ -40,10 +40,10 @@ inferSpec =
 
 
 hasType :: Expr -> SimpleType -> Expectation
-e `hasType` t = infer e `shouldBe` Just t
+e `hasType` t = infer' e `shouldBe` Just t
 
 hasNoType :: Expr -> Expectation
-hasNoType e = infer e `shouldBe` Nothing
+hasNoType e = infer' e `shouldBe` Nothing
 
 extractSpec :: Spec
 extractSpec =
