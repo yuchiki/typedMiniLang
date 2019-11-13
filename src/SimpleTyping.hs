@@ -9,6 +9,12 @@ import Expr
 
 type TypeEquation = (SimpleType, SimpleType)
 
+infer :: Expr -> Maybe SimpleType
+infer e = do
+    (eqs, t) <- extract e
+    substitution <- unify eqs
+    return $ substitute substitution t
+
 extract :: Expr -> Maybe ([TypeEquation], SimpleType)
 extract e = do
     (_, eqs, t) <- extract' newTypeIDGenerator Map.empty e
