@@ -14,7 +14,7 @@ data InferResult =
     SuccessfullyTyped SimpleType
     | Untypable
     | ConstraintInsufficient SimpleType
-    deriving (Show)
+    deriving (Show, Eq)
 
 infer :: Expr -> InferResult
 infer e =

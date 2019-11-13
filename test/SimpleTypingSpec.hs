@@ -40,10 +40,10 @@ infer'Spec =
 
 
 hasType :: Expr -> SimpleType -> Expectation
-e `hasType` t = infer' e `shouldBe` Just t
+e `hasType` t = infer e `shouldBe` SuccessfullyTyped t
 
 hasNoType :: Expr -> Expectation
-hasNoType e = infer' e `shouldBe` Nothing
+hasNoType e = infer e `shouldBe` Untypable
 
 extractSpec :: Spec
 extractSpec =
