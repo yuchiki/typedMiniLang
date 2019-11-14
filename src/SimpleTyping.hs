@@ -9,6 +9,27 @@ import Expr
 
 type TypeEquation = (SimpleType, SimpleType)
 
+
+data InferResult =
+    SuccessfullyTyped SimpleType
+    | Untypable
+    | ConstraintInsufficient SimpleType
+    deriving (Show, Eq)
+
+infer :: Expr -> InferResult
+infer e =
+    case infer' e of
+        Nothing -> Untypable
+        Just t ->
+            if null $ ftv t then SuccessfullyTyped t else ConstraintInsufficient t
+
+
+infer' :: Expr -> Maybe SimpleType
+infer' e = do
+    (eqs, t) <- extract e
+    substitution <- unify eqs
+    return $ substitute substitution t
+
 extract :: Expr -> Maybe ([TypeEquation], SimpleType)
 extract e = do
     (_, eqs, t) <- extract' newTypeIDGenerator Map.empty e

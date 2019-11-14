@@ -52,7 +52,7 @@ not-defined
 | T1が定義される | not yet
 | (e0がparseできる) | not yet
 | e0が実行できる | done
-| e0がT0型検査できる | not yet
+| e0がT0型検査できる | done
 | e0がT1型検査できる | not yet
 | e1が実行できる | done
 | (e1がparseできる) | not yet
