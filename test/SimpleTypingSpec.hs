@@ -9,7 +9,7 @@ import Expr
 
 spec :: Spec
 spec = do
-    infer'Spec
+    inferSpec
     extractSpec
     unifySpec
     ftvSpec
@@ -17,8 +17,8 @@ spec = do
     substituteSpec
     substituteEqsSpec
 
-infer'Spec :: Spec -- 散発的なテストにとどめて、全体の仕組みが動いているかどうかのチェックだけをする。
-infer'Spec =
+inferSpec :: Spec -- 散発的なテストにとどめて、全体の仕組みが動いているかどうかのチェックだけをする。
+inferSpec =
     describe "infer" $ do
         context "given typable expressions" $ do
             it "types 1" $
@@ -36,6 +36,9 @@ infer'Spec =
                 hasNoType $ EAdd (EInt 1) (EBool True)
             it "rejects (fun x -> x + 1) true" $
                 hasNoType $ EApp (EAbs "x" (EAdd (EVar "x") (EInt 1))) (EBool True)
+        context "given multi-typed expressions" $
+            it "gives a type with not reified type variables" $
+                hasMultipleTypes $ EAbs "x" (EVar "x")
 
 
 
@@ -44,6 +47,12 @@ e `hasType` t = infer e `shouldBe` SuccessfullyTyped t
 
 hasNoType :: Expr -> Expectation
 hasNoType e = infer e `shouldBe` Untypable
+
+hasMultipleTypes :: Expr -> Expectation
+hasMultipleTypes e =
+    case infer e of
+        ConstraintInsufficient _ -> return ()
+        _ -> 1 `shouldBe` 0  -- まともな書き方に書き直したい、、、
 
 extractSpec :: Spec
 extractSpec =
