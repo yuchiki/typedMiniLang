@@ -30,8 +30,7 @@ ifExpr = do
     reserved "then"
     e2 <- expr
     reserved "else"
-    e3 <- expr
-    return $ EIf e1 e2 e3
+    EIf e1 e2 <$> expr
 
 letExpr :: Parser Expr
 letExpr = do
@@ -40,16 +39,14 @@ letExpr = do
     reservedOp "="
     e1 <- expr
     reservedOp "in"
-    e2 <- expr
-    return $ ELet x e1 e2
+    ELet x e1 <$> expr
 
 absExpr :: Parser Expr
 absExpr = do
     reserved "fun"
     x <- identifier
     reservedOp "->"
-    e <- expr
-    return $ EAbs x e
+    EAbs x <$> expr
 
 
 simpleExpr :: Parser Expr
