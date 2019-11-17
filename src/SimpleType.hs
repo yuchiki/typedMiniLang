@@ -10,7 +10,21 @@ data SimpleType =
     | TBool
     | TInt
     | TFun SimpleType SimpleType
-    deriving(Show, Eq)
+    deriving(Eq)
+
+instance Show SimpleType where
+    show (TVar i)
+        | i <= 23   = greeks !! i
+        | otherwise = "ty" ++ show i
+        where
+            greeks = ["α", "β", "γ", "δ", "ε", "ζ", "χ", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"]
+    show TBool = "bool"
+    show TInt = "int"
+    show (TFun t1 t2) = parensLeft t1 ++ " -> " ++ show t2
+
+parensLeft :: SimpleType -> String
+parensLeft (TFun t1 t2) = "(" ++ show (TFun t1 t2) ++ ")"
+parensLeft t = show t
 
 type TypeEnv = Map.Map Variable SimpleType
 
