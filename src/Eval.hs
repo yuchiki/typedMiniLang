@@ -1,4 +1,4 @@
-module Eval(eval) where
+module Eval(eval, Env) where
 
 import qualified Data.Map as Map
 import Variable
