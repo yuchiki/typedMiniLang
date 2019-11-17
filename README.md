@@ -58,3 +58,7 @@ not-defined
 | (e1がparseできる) | not yet
 | e1がT0型検査できる | not yet
 | e1がT1型検査できる | not yet
+
+# 使い方
+
+起動するとreplが立ち上がる。そこに式を入力。
