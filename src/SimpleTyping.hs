@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module SimpleTyping(infer, extract, unify, substitute, TypeEquation, showTypeEquations, Substitution, showSubstitution) where
+module SimpleTyping(infer, extract, unify, substitute, TypeEquation, showTypeEquations, Substitution, showSubstitution, InferResult(..)) where
 
 import qualified Data.Map as Map
 import Development.Placeholders
