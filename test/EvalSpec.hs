@@ -89,7 +89,7 @@ spec =
 getMatcher :: Env -> (OkMatcher, FailMatcher)
 getMatcher env = (shouldBecome, shouldFail)
     where
-        evalWithSpecificEnv = eval env
+        evalWithSpecificEnv = eval' env
         e `shouldBecome` v = evalWithSpecificEnv e `shouldBe` Just v
         shouldFail e = evalWithSpecificEnv e `shouldBe` Nothing
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module SimpleTyping where
+module SimpleTyping(infer, extract, unify, substitute, TypeEquation, showTypeEquations, Substitution, showSubstitution, InferResult(..)) where
 
 import qualified Data.Map as Map
 import Development.Placeholders
@@ -8,6 +8,17 @@ import SimpleType
 import Expr
 
 type TypeEquation = (SimpleType, SimpleType)
+
+showTypeEquation :: TypeEquation -> String
+showTypeEquation (t1, t2) = show t1 ++ " = " ++ show t2
+
+showTypeEquations :: [TypeEquation] -> String
+showTypeEquations eqs = unlines $ map showTypeEquation eqs
+
+type Substitution = [(TypeID, SimpleType)]
+
+showSubstitution :: Substitution -> String
+showSubstitution = showTypeEquations . map (\(i, t) -> (TVar i, t))
 
 
 data InferResult =
@@ -97,8 +108,6 @@ extractCompOp gen tenv e1 e2 = do
     (gen2, eqs2, t2) <- extract' gen1 tenv e2
     return (gen2, (t1, TInt) : (t2, TInt) : eqs1 ++ eqs2, TBool)
 
-type Substitution = [(TypeID, SimpleType)]
-
 unify :: [TypeEquation] -> Maybe Substitution
 unify [] = return []
 unify ((t1, t2) : eqs)
@@ -109,7 +118,7 @@ unify ((t, TVar i) : eqs) =
         else do
             let substitutedEqs = substituteEqs [(i, t)] eqs
             substitution <- unify substitutedEqs
-            return $ (i, t) : substitution
+            return $ (i, substitute substitution t) :substitution
 unify ((TVar i, t ) : eqs) = unify ((t, TVar i) : eqs)
 unify ((TFun t11 t12, TFun t21 t22) : eqs) = unify ((t11, t21) : (t12, t22) : eqs)
 unify _ = Nothing
