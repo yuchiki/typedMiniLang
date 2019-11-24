@@ -9,7 +9,7 @@ import Expr
 
 spec :: Spec
 spec = do
-    inferSpec
+--    inferSpec
     extractSpec
     unifySpec
     ftvSpec
@@ -17,6 +17,7 @@ spec = do
     substituteSpec
     substituteEqsSpec
 
+{-
 inferSpec :: Spec -- 散発的なテストにとどめて、全体の仕組みが動いているかどうかのチェックだけをする。
 inferSpec =
     describe "infer" $ do
@@ -41,7 +42,6 @@ inferSpec =
                 hasMultipleTypes $ EAbs "x" (EVar "x")
 
 
-
 hasType :: Expr -> SimpleType -> Expectation
 e `hasType` t = infer e `shouldBe` SuccessfullyTyped t
 
@@ -53,6 +53,7 @@ hasMultipleTypes e =
     case infer e of
         ConstraintInsufficient _ -> return ()
         _ -> 1 `shouldBe` 0  -- まともな書き方に書き直したい、、、
+-}
 
 extractSpec :: Spec
 extractSpec =
