@@ -84,7 +84,7 @@ extractBoolOp :: BinOpTyper
 extractBoolOp = extractOp TBool TBool
 
 extractCompOp :: BinOpTyper
-extractCompOp = extractOp TBool TBool
+extractCompOp = extractOp TInt TBool
 
 -- 方程式を解く部分 -----------------------------------------------------------------------------------
 unify :: [TypeEquation] -> Maybe Substitution
