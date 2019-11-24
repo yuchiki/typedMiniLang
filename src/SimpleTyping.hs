@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module SimpleTyping(infer, extract, unify, substitute, TypeEquation, showTypeEquations, Substitution, showSubstitution, InferResult(..)) where
+module SimpleTyping(extract, unify, substitute, TypeEquation, showTypeEquations, Substitution, showSubstitution) where
 
 import qualified Data.Map as Map
 import Development.Placeholders
@@ -8,6 +8,7 @@ import SimpleType
 import Expr
 
 type TypeEquation = (SimpleType, SimpleType)
+type Substitution = [(TypeID, SimpleType)]
 
 showTypeEquation :: TypeEquation -> String
 showTypeEquation (t1, t2) = show t1 ++ " = " ++ show t2
@@ -15,32 +16,11 @@ showTypeEquation (t1, t2) = show t1 ++ " = " ++ show t2
 showTypeEquations :: [TypeEquation] -> String
 showTypeEquations eqs = unlines $ map showTypeEquation eqs
 
-type Substitution = [(TypeID, SimpleType)]
 
 showSubstitution :: Substitution -> String
 showSubstitution = showTypeEquations . map (\(i, t) -> (TVar i, t))
 
-
-data InferResult =
-    SuccessfullyTyped SimpleType
-    | Untypable
-    | ConstraintInsufficient SimpleType
-    deriving (Show, Eq)
-
-infer :: Expr -> InferResult
-infer e =
-    case infer' e of
-        Nothing -> Untypable
-        Just t ->
-            if null $ ftv t then SuccessfullyTyped t else ConstraintInsufficient t
-
-
-infer' :: Expr -> Maybe SimpleType
-infer' e = do
-    (eqs, t) <- extract e
-    substitution <- unify eqs
-    return $ substitute substitution t
-
+-- 方程式を作る部分 -----------------------------------------------------------------------------------
 extract :: Expr -> Maybe ([TypeEquation], SimpleType)
 extract e = do
     (_, eqs, t) <- extract' newTypeIDGenerator Map.empty e
@@ -89,29 +69,27 @@ extract' gen tenv ENil = $notImplemented -- リストはまだサポートしな
 extract' gen tenv (ECons e1 e2) = $notImplemented -- リストはまだサポートしない
 extract' gen tenv (EMatch e1 e2 x1 x2 e3) = $notImplemented -- リストはまだサポートしない
 
+type BinOpTyper = TypeIDGenerator -> TypeEnv -> Expr -> Expr -> Maybe (TypeIDGenerator, [TypeEquation], SimpleType)
 
-extractIntOp :: TypeIDGenerator -> TypeEnv -> Expr -> Expr -> Maybe (TypeIDGenerator, [TypeEquation], SimpleType)
-extractIntOp gen tenv e1 e2 = do
+extractOp :: SimpleType -> SimpleType -> BinOpTyper
+extractOp inType outType gen tenv e1 e2 = do
     (gen1, eqs1, t1) <- extract' gen tenv e1
     (gen2, eqs2, t2) <- extract' gen1 tenv e2
-    return (gen2, (t1, TInt) : (t2, TInt) : eqs1 ++ eqs2, TInt)
+    return (gen2, (t1, inType) : (t2, inType) : eqs1 ++ eqs2, outType)
 
-extractBoolOp :: TypeIDGenerator -> TypeEnv -> Expr -> Expr -> Maybe (TypeIDGenerator, [TypeEquation], SimpleType)
-extractBoolOp gen tenv e1 e2 = do
-    (gen1, eqs1, t1) <- extract' gen tenv e1
-    (gen2, eqs2, t2) <- extract' gen1 tenv e2
-    return (gen2, (t1, TBool) : (t2, TBool) : eqs1 ++ eqs2, TBool)
+extractIntOp ::BinOpTyper
+extractIntOp = extractOp TInt TInt
 
-extractCompOp :: TypeIDGenerator -> TypeEnv -> Expr -> Expr -> Maybe (TypeIDGenerator, [TypeEquation], SimpleType)
-extractCompOp gen tenv e1 e2 = do
-    (gen1, eqs1, t1) <- extract' gen tenv e1
-    (gen2, eqs2, t2) <- extract' gen1 tenv e2
-    return (gen2, (t1, TInt) : (t2, TInt) : eqs1 ++ eqs2, TBool)
+extractBoolOp :: BinOpTyper
+extractBoolOp = extractOp TBool TBool
 
+extractCompOp :: BinOpTyper
+extractCompOp = extractOp TBool TBool
+
+-- 方程式を解く部分 -----------------------------------------------------------------------------------
 unify :: [TypeEquation] -> Maybe Substitution
 unify [] = return []
-unify ((t1, t2) : eqs)
-    | t1 == t2 = unify eqs
+unify ((t1, t2) : eqs) | t1 == t2 = unify eqs
 unify ((t, TVar i) : eqs) =
         if i `elem` ftv t
         then Nothing
@@ -124,7 +102,6 @@ unify ((TFun t11 t12, TFun t21 t22) : eqs) = unify ((t11, t21) : (t12, t22) : eq
 unify _ = Nothing
 
 substituteEqs :: Substitution -> [TypeEquation] -> [TypeEquation]
-
 substituteEqs substitution = map (\(l, r) -> (substitute substitution l, substitute substitution r))
 
 substitute :: Substitution -> SimpleType ->SimpleType
